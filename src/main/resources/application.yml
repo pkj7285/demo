@@ -1,0 +1,21 @@
+#spring.application.name=demo
+#server.port=8888
+#
+#
+#spring.messages.basename=message/messages,message/common,message/member
+#spring.messages.encoding=UTF-8
+#spring.messages.fallbackToSystemLocale=false
+#spring.messages.alwaysUseMessageFormat=true
+
+
+server:
+  port: 8888
+
+spring:
+  application:
+    name: demo
+  messages:
+    basename: message/messages, message/common, message/member
+    encoding: UTF-8
+    fallbackToSystemLocale: false
+    alwaysUseMessageFormat: true
