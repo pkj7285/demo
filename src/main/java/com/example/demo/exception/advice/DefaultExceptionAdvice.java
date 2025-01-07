@@ -1,17 +1,15 @@
 package com.example.demo.exception.advice;
 
+import com.example.demo.common.dto.CommonResponse;
 import com.example.demo.constants.ConstErrorInfo;
-import com.example.demo.util.MessageUtil;
+import com.example.demo.constants.ConstError;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.lge.csms.common.common.dto.CommonResponse;
 //import com.lge.csms.constants.ConstError;
 //import com.lge.csms.constants.ConstErrorInfo;
 //import com.lge.csms.exception.BusinessException;
 //import com.lge.csms.exception.RESTException;
-//import com.lge.csms.exception.dto.Error;
-//import com.lge.csms.exception.dto.ErrorDto;
-import jakarta.validation.ConstraintViolationException;
+import com.example.demo.exception.dto.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,50 +34,49 @@ public class DefaultExceptionAdvice {
     private String[] basename;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-//    protected <T> ResponseEntity<CommonResponse<T>> handleValidationExceptions(
-//            MethodArgumentNotValidException ex) {
-        protected  void handleValidationExceptions(MethodArgumentNotValidException ex) {
-        log.info(MessageUtil.getMessage("member.success"));
-        log.info(basename[0]);
+    protected <T> ResponseEntity<CommonResponse<T>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+//        log.info(">>>>>>> getMessage >>>> {} ",MessageUtil.getMessage("member.success"));
+//        log.info(">>>>>>> basename >>>> {}",  basename[2]);
 
-//        StringBuilder errors = new StringBuilder();
-//
-//        Iterator<ObjectError> iterator = ex.getBindingResult().getAllErrors().iterator();
-//        if (iterator.hasNext()) {
-//            ObjectError error = iterator.next();
-//            if (error instanceof FieldError) {
-//                FieldError fieldError = (FieldError) error;
-//                Map<String, Object> jsonMap = new HashMap<>();
-//                String errorField = fieldError.getField();
-//
-//                if (errorField.indexOf('[') != -1) {
-//                    jsonMap.put("state", errorField.substring(0, errorField.indexOf('[')));
-//                    jsonMap.put("field", errorField.substring(errorField.indexOf(']') + 2));
-//                    jsonMap.put(
-//                            "index",
-//                            Integer.parseInt(
-//                                    errorField.substring(
-//                                            errorField.indexOf('[') + 1, errorField.indexOf(']'))));
-//                    jsonMap.put("message", fieldError.getDefaultMessage());
-//                } else {
-//                    jsonMap.put("field", fieldError.getField());
-//                    jsonMap.put("message", fieldError.getDefaultMessage());
-//                }
-//
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                try {
-//                    errors.append(objectMapper.writeValueAsString(jsonMap));
-//                } catch (JsonProcessingException e) {
-//                    log.error(e.getMessage(), e);
-//                    errors.append(error.getDefaultMessage());
-//                }
-//            } else {
-//                errors.append(error.getDefaultMessage());
-//            }
-//        }
-//        ConstErrorInfo constErrorInfo = ConstError.ValidationFail;
-//        constErrorInfo.setMesg(errors.toString());
-//        return getFaileResponse(constErrorInfo);
+        StringBuilder errors = new StringBuilder();
+
+        Iterator<ObjectError> iterator = ex.getBindingResult().getAllErrors().iterator();
+        if (iterator.hasNext()) {
+            ObjectError error = iterator.next();
+            if (error instanceof FieldError) {
+                FieldError fieldError = (FieldError) error;
+                Map<String, Object> jsonMap = new HashMap<>();
+                String errorField = fieldError.getField();
+
+                if (errorField.indexOf('[') != -1) {
+                    jsonMap.put("state", errorField.substring(0, errorField.indexOf('[')));
+                    jsonMap.put("field", errorField.substring(errorField.indexOf(']') + 2));
+                    jsonMap.put(
+                            "index",
+                            Integer.parseInt(
+                                    errorField.substring(
+                                            errorField.indexOf('[') + 1, errorField.indexOf(']'))));
+                    jsonMap.put("i18n", fieldError.getDefaultMessage());
+                } else {
+                    jsonMap.put("field", fieldError.getField());
+                    jsonMap.put("i18n", fieldError.getDefaultMessage());
+                }
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    errors.append(objectMapper.writeValueAsString(jsonMap));
+                } catch (JsonProcessingException e) {
+                    log.error(e.getMessage(), e);
+                    errors.append(error.getDefaultMessage());
+                }
+            } else {
+                errors.append(error.getDefaultMessage());
+            }
+        }
+        ConstErrorInfo constErrorInfo = ConstError.BadRequest;
+        constErrorInfo.setMessage(errors.toString());
+        return getFaileResponse(constErrorInfo);
     }
 
 //    @ExceptionHandler(SQLException.class)
@@ -131,14 +126,15 @@ public class DefaultExceptionAdvice {
 //    }
 
 
-//    private <T> ResponseEntity<CommonResponse<T>> getFaileResponse(ConstErrorInfo constErrorInfo) {
-//        ErrorDto errorDto = new ErrorDto(constErrorInfo);
-//        return new ResponseEntity<>(
-//                CommonResponse.<T>builder()
-//                        .successOrNot("N")
-//                        .statusCode(String.valueOf(constErrorInfo.getResponseCode()))
-//                        .errorMessage(errorDto.getMessage())
-//                        .build(),
-//                OK);
-//    }
+    //CommonResponse에 담으면 무조건 status code 200으로 내려감... to-do
+    private <T> ResponseEntity<CommonResponse<T>> getFaileResponse(ConstErrorInfo constErrorInfo) {
+       ErrorDto errorDto = new ErrorDto(constErrorInfo);
+        return new ResponseEntity<>(
+                CommonResponse.<T>builder()
+                        .successOrNot("N")
+                        .statusCode(String.valueOf(constErrorInfo.getResponseCode()))
+                        .errorMessage(errorDto.getMessage())
+                        .build(),
+                OK);
+    }
 }

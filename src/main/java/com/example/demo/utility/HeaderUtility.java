@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.utility;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
@@ -8,7 +8,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Locale;
 
 @UtilityClass
-public class HeaderUtil {
+public class HeaderUtility {
 
     public static Locale getLocale() {
         HttpServletRequest request =

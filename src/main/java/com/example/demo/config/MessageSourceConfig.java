@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.util.HeaderUtil;
+import com.example.demo.utility.HeaderUtility;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.rakugakibox.util.YamlResourceBundle;
@@ -32,7 +32,7 @@ public class MessageSourceConfig {
         return new LocaleResolver() {
             @Override
             public Locale resolveLocale(HttpServletRequest request) {
-                return HeaderUtil.getLocale();
+                return HeaderUtility.getLocale();
             }
 
             @Override

@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ConstErrorInfo {
 
-    private int statusCode;
+    private int responseCode;
     private String code;
     @ToString.Include private String message;
 }

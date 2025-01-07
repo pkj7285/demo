@@ -12,15 +12,11 @@ import lombok.experimental.SuperBuilder;
 @Builder
 public class DemoReqDto {
     @Schema(description = "계약번호")
-    @NotBlank(message = "값이 없습니다.")
+    @NotBlank(message = "{common.valid.notBlank}")
     private String contNo;
 
     @Schema(description = "내용")
-    @NotBlank(message = "값이 없습니다.")
+    @NotBlank(message = "{common.valid.notBlank}")
     private String reqCntn;
 
-    @Schema(description = "배열")
-    @Size(min=1)
-    @NonNull
-    private String[] str;
 }

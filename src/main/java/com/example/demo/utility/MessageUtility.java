@@ -1,18 +1,17 @@
-package com.example.demo.util;
+package com.example.demo.utility;
 
-import com.example.demo.util.BeanUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 
 @Slf4j
 @UtilityClass
-public class MessageUtil {
+public class MessageUtility {
 
     public static String getMessage(String code) {
         try {
-            MessageSource messageSource = BeanUtil.getBean(MessageSource.class);
-            return messageSource.getMessage(code, null, HeaderUtil.getLocale());
+            MessageSource messageSource = BeanUtility.getBean(MessageSource.class);
+            return messageSource.getMessage(code, null, HeaderUtility.getLocale());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return code;
@@ -21,8 +20,8 @@ public class MessageUtil {
 
     public static String getMessage(String code, Object[] args) {
         try {
-            MessageSource messageSource = BeanUtil.getBean(MessageSource.class);
-            return messageSource.getMessage(code, args, HeaderUtil.getLocale());
+            MessageSource messageSource = BeanUtility.getBean(MessageSource.class);
+            return messageSource.getMessage(code, args, HeaderUtility.getLocale());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return code;

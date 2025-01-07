@@ -1,0 +1,4 @@
+common:
+  success: ""
+  valid:
+    notBlank: "이 필드는 비워둘 수 없습니다."

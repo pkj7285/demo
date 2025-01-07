@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.utility;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
@@ -10,7 +10,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import java.util.Objects;
 
 @UtilityClass
-public class BeanUtil {
+public class BeanUtility {
 
     public static <T> T getBean(Class<T> type) {
         HttpServletRequest request =
